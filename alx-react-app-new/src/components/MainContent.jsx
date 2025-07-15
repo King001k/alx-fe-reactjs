@@ -1,14 +1,11 @@
-import React from 'react';
-import UserProfile from './UserProfile';
-
 function MainContent() {
   return (
-    <main style={{ padding: '20px', backgroundColor: '#f5f5f5' }}>
-      <UserProfile name="Kingsley" age={24} bio="Front-end developer and tech enthusiast." />
-      <UserProfile name="Ada" age={22} bio="UI/UX Designer who loves minimalism." />
+    <main style={{ backgroundColor: '#f4f4f4', padding: '20px', minHeight: '300px' }}>
+      <p style={{ fontSize: '18px' }}>
+        Welcome to my React app! Here you'll find information about my favorite cities.
+      </p>
     </main>
   );
 }
 
 export default MainContent;
-
