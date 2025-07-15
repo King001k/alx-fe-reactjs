@@ -1,7 +1,16 @@
-import UserInfo from './UserInfo'; // This component will show nested user info
+import { useContext } from 'react';          
+import UserContext from './UserContext';     
+import UserInfo from './UserInfo';
 
 function ProfilePage() {
-  return <UserInfo />; // No need to pass props anymore
+  const userData = useContext(UserContext);  
+
+  return (
+    <div>
+      <h2>Welcome, {userData.name}</h2>
+      <UserInfo />
+    </div>
+  );
 }
 
 export default ProfilePage;
