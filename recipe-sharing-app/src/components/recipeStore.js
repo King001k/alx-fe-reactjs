@@ -10,13 +10,17 @@ const useRecipeStore = create((set) => ({
       recipes: [...state.recipes, newRecipe],
     })),
 
-  removeRecipe: (index) =>
+  deleteRecipe: (id) =>
     set((state) => ({
-      recipes: state.recipes.filter((_, i) => i !== index),
+      recipes: state.recipes.filter((recipe) => recipe.id !== id),
     })),
 
-  clearRecipes: () => set({ recipes: [] }),
+  updateRecipe: (updatedRecipe) =>
+    set((state) => ({
+      recipes: state.recipes.map((recipe) =>
+        recipe.id === updatedRecipe.id ? updatedRecipe : recipe
+      ),
+    })),
 }));
 
 export default useRecipeStore;
-
