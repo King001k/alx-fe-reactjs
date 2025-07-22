@@ -1,21 +1,32 @@
-import React from 'react';
-import { useRecipeStore } from "../store/recipeStore";
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useRecipeStore } from '../store/recipeStore';
 
 const RecipeList = () => {
-  const recipes = useRecipeStore((state) => state.filteredRecipes);
+  const recipes = useRecipeStore(state => state.filteredRecipes);
+  const filterRecipes = useRecipeStore(state => state.filterRecipes);
+  const searchTerm = useRecipeStore(state => state.searchTerm);
 
-  if (recipes.length === 0) {
-    return <p>No recipes match your search.</p>;
-  }
+  // Automatically re-filter whenever searchTerm changes
+  useEffect(() => {
+    filterRecipes();
+  }, [searchTerm, filterRecipes]);
 
   return (
     <div>
-      {recipes.map((recipe) => (
-        <div key={recipe.id} style={{ border: '1px solid #eee', padding: '10px', marginBottom: '10px' }}>
-          <h3>{recipe.title}</h3>
-          <p>{recipe.description}</p>
-        </div>
-      ))}
+      <h2>Recipe List</h2>
+      {recipes.length === 0 ? (
+        <p>No recipes found.</p>
+      ) : (
+        recipes.map(recipe => (
+          <div key={recipe.id}>
+            <Link to={`/recipes/${recipe.id}`}>
+              <h3>{recipe.title}</h3>
+            </Link>
+            <p>Prep Time: {recipe.prepTime} mins</p>
+          </div>
+        ))
+      )}
     </div>
   );
 };
