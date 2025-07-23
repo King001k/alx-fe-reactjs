@@ -7,16 +7,22 @@ export const useRecipeStore = create((set, get) => ({
   // User's favorite recipe IDs
   favorites: [],
 
-  // Recommended recipes based on favorite ingredients
+  // Recommended recipes
   recommendations: [],
 
-  // Add a new recipe to the list
+  // Search term for filtering
+  searchTerm: '',
+
+  // Set the search term
+  setSearchTerm: (term) => set({ searchTerm: term }),
+
+  // Add a new recipe
   addRecipe: (recipe) =>
     set((state) => ({
       recipes: [...state.recipes, recipe],
     })),
 
-  // Toggle a recipe in and out of favorites
+  // Toggle favorite status and update recommendations
   toggleFavorite: (recipeId) => {
     const { favorites, recipes } = get();
 
@@ -24,23 +30,22 @@ export const useRecipeStore = create((set, get) => ({
       ? favorites.filter((id) => id !== recipeId)
       : [...favorites, recipeId];
 
-    // Get the favorite recipes
+    // Get favorite recipes
     const favoriteRecipes = recipes.filter((r) =>
       updatedFavorites.includes(r.id)
     );
 
-    // Gather unique ingredients from favorite recipes
+    // Extract unique ingredients from favorite recipes
     const favoriteIngredients = favoriteRecipes.flatMap((r) => r.ingredients || []);
     const uniqueIngredients = [...new Set(favoriteIngredients)];
 
-    // Filter recommended recipes that share ingredients, not in favorites
+    // Generate recommendations (not in favorites but share ingredients)
     const recommended = recipes.filter(
       (recipe) =>
         !updatedFavorites.includes(recipe.id) &&
         recipe.ingredients?.some((ing) => uniqueIngredients.includes(ing))
     );
 
-    // Update the store
     set({
       favorites: updatedFavorites,
       recommendations: recommended,
